@@ -1,0 +1,240 @@
+🔧 Project Overview:
+
+I want to build a Construction Materials Catalog Web App for Ethiopia. It should allow users to browse, post, and manage construction products and companies. The system should support full CRUD operations for users, products, and companies with an easy-to-navigate UI.
+
+🎯 Main Features:
+
+User System
+
+Registration/Login (Email, Username, Name, Profile Picture)
+
+Profile page (Edit Info)
+
+Logout functionality
+
+User can register multiple companies
+
+Company Management
+
+Company fields:
+
+Company Name
+
+Logo
+
+Full Info (description, services, etc.)
+
+Location (integrated Google Map or address)
+
+Posted by (user foreign key)
+
+Product Management
+
+Product fields:
+
+Name
+
+Company (foreign key reference to company)
+
+Category (Cement, Steel, Wood, etc.)
+
+Unit (kg, m2, piece, lt, etc.)
+
+Price per unit
+
+Made of (material)
+
+Description
+
+Photo gallery
+
+Posted by (user foreign key)
+
+All product and company cards should be clickable to open a popup/modal with full information.
+
+If the product was posted by the current logged-in user, show Edit/Delete buttons.
+
+Categories
+
+Manageable list of categories for both companies and products (e.g., Cement, Steel, Wood, Tiles, Paint, Other)
+
+📄 Pages Required:
+1. Home Page:
+
+Hero section with background image
+
+Search bar for materials
+
+Switch button (toggle: Browse Products / Browse Companies)
+
+Category icons/cards listed below
+
+Header includes:
+
+Home button
+
+Search field
+
+Login/Register or Profile dropdown (depending on auth status)
+
+2. Browse Products Page:
+
+Gallery/list of product cards
+
+Filters by:
+
+Category
+
+Unit
+
+Price range
+
+Sort by latest, price, etc.
+
+Search bar
+
+“Add Product” button (visible only to logged-in users)
+
+3. Browse Companies Page:
+
+Gallery/list of companies with logos and summaries
+
+Filters by:
+
+Category
+
+Location
+
+Sort options
+
+“Register a Company” button (visible only to logged-in users)
+
+4. About Page:
+
+Info about the developer or company
+
+Contact info
+
+Embedded Google Map showing office location
+
+🧩 Components / UI Requirements:
+✅ Header:
+
+Responsive
+
+Contains:
+
+Logo/Home
+
+Search Bar
+
+Login/Register or Profile (with dropdown):
+
+Edit Profile
+
+Register a Company
+
+Logout
+
+✅ Sidebar Menu:
+
+Slide-out menu
+
+Contains:
+
+Home
+
+Categories
+
+Browse Products
+
+Browse Companies
+
+Favorites
+
+About
+
+Language Switch (Amharic ↔ English)
+
+✅ Product Card Popup:
+
+Opens modal with:
+
+Product image gallery
+
+Full info
+
+Company name (clickable)
+
+Edit/Delete buttons (if owned by user)
+
+✅ Company Card Popup:
+
+Opens modal with:
+
+Logo
+
+Description
+
+Map location
+
+Product list from that company
+
+Edit/Delete buttons (if owned by user)
+
+🔗 Database Models (Relational Example):
+🔸 User
+{
+  id: UUID,
+  username: string,
+  name: string,
+  email: string,
+  profile_picture: string
+}
+
+🔸 Company
+{
+  id: UUID,
+  name: string,
+  logo: string,
+  full_info: text,
+  location_map: string (map/embed url),
+  posted_by: user_id (foreign key)
+}
+
+🔸 Product
+{
+  id: UUID,
+  name: string,
+  company_id: UUID,
+  category: string,
+  unit: string,
+  price_per_unit: number,
+  made_of: string,
+  description: text,
+  photo_gallery: [string],
+  posted_by: user_id (foreign key)
+}
+
+🔸 Category
+{
+  id: UUID,
+  name: string,
+  type: "Product" | "Company"
+}
+
+🚀 Notes for the AI or Dev Tool:
+
+All buttons (Add/Edit/Delete/View) must be wired to the database.
+
+Ensure only owners of the product/company can edit or delete their entries.
+
+Use role-based access if needed (e.g., admin, user).
+
+All popups (products/companies) should be dynamic and reusable.
+
+Use responsive design for mobile/desktop views.
+
+Use modern, clean UI components (Material UI / Tailwind CSS).
+
+Support multilingual interface (at least English + Amharic toggle).
