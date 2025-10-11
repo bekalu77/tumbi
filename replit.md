@@ -21,6 +21,15 @@ A bilingual (English/Amharic) construction materials catalog web application for
 - **Category Filtering**: Category cards on home page navigate to products page with pre-applied category filter
 - **URL Parameters**: Products page reads category from URL query parameter and applies filter automatically
 
+### Forms & Data Management
+- **Profile Editor**: Edit Profile opens comprehensive profile editor with avatar upload, personal info, company, location, and bio
+- **Product Form**: Add/Edit Product dialog with image upload, category selection, pricing, inventory, materials, and description
+- **Company Registration**: Register/Edit Company form with logo upload, business details, contact info, location, and company stats
+- **Data Structure**: All forms designed with proper field validation and database-ready structure:
+  - Profile: fullName, email, phone, company, bio, location
+  - Product: name, category, price, unit, madeOf, description, images, minOrder, stock
+  - Company: name, description, email, phone, website, address, city, region, postalCode, established, employees, specialization
+
 ## Tech Stack
 - **Frontend**: React 18, TypeScript, Vite
 - **Styling**: Tailwind CSS, Shadcn UI components
@@ -50,7 +59,12 @@ client/
 │   │   ├── ProductCard.tsx  # Product display card with favorites
 │   │   ├── CompanyCard.tsx  # Company display card
 │   │   ├── CategoryCard.tsx # Category selector
-│   │   └── FilterPanel.tsx  # Advanced filtering panel
+│   │   ├── FilterPanel.tsx  # Advanced filtering panel
+│   │   ├── ProfileEditDialog.tsx    # User profile editor form
+│   │   ├── ProductFormDialog.tsx    # Add/Edit product form
+│   │   ├── CompanyFormDialog.tsx    # Register/Edit company form
+│   │   ├── ProductDetailModal.tsx   # Product detail view
+│   │   └── CompanyDetailModal.tsx   # Company detail view
 │   ├── pages/               # Route pages
 │   │   ├── Home.tsx         # Landing page with hero, categories, recent products
 │   │   ├── BrowseProducts.tsx

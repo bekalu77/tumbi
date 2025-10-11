@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Pencil, Trash2 } from "lucide-react";
+import ProductFormDialog from "./ProductFormDialog";
 
 interface ProductDetailModalProps {
   open: boolean;
@@ -36,6 +37,12 @@ export default function ProductDetailModal({
   onDelete,
 }: ProductDetailModalProps) {
   const [selectedImage, setSelectedImage] = useState(0);
+  const [showEditForm, setShowEditForm] = useState(false);
+
+  const handleEdit = () => {
+    setShowEditForm(true);
+    onOpenChange(false);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -107,7 +114,7 @@ export default function ProductDetailModal({
                 <Button
                   variant="outline"
                   className="flex-1"
-                  onClick={onEdit}
+                  onClick={handleEdit}
                   data-testid="button-edit-product"
                 >
                   <Pencil className="h-4 w-4 mr-2" />
@@ -127,6 +134,13 @@ export default function ProductDetailModal({
           </div>
         </div>
       </DialogContent>
+
+      <ProductFormDialog
+        open={showEditForm}
+        onOpenChange={setShowEditForm}
+        product={product}
+        mode="edit"
+      />
     </Dialog>
   );
 }

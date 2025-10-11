@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Search, User, Menu, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +11,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import ThemeToggle from "./ThemeToggle";
+import ProfileEditDialog from "./ProfileEditDialog";
+import ProductFormDialog from "./ProductFormDialog";
+import CompanyFormDialog from "./CompanyFormDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Link } from "wouter";
 
@@ -20,6 +24,9 @@ interface HeaderProps {
 
 export default function Header({ onMenuClick, isAuthenticated = false }: HeaderProps) {
   const { t } = useLanguage();
+  const [showProfileEdit, setShowProfileEdit] = useState(false);
+  const [showProductForm, setShowProductForm] = useState(false);
+  const [showCompanyForm, setShowCompanyForm] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background">
@@ -64,15 +71,15 @@ export default function Header({ onMenuClick, isAuthenticated = false }: HeaderP
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem data-testid="menu-edit-profile">
+                <DropdownMenuItem onClick={() => setShowProfileEdit(true)} data-testid="menu-edit-profile">
                   <User className="mr-2 h-4 w-4" />
                   {t("editProfile")}
                 </DropdownMenuItem>
-                <DropdownMenuItem data-testid="menu-add-product">
+                <DropdownMenuItem onClick={() => setShowProductForm(true)} data-testid="menu-add-product">
                   <Plus className="mr-2 h-4 w-4" />
                   {t("addProduct")}
                 </DropdownMenuItem>
-                <DropdownMenuItem data-testid="menu-register-company">
+                <DropdownMenuItem onClick={() => setShowCompanyForm(true)} data-testid="menu-register-company">
                   {t("registerCompany")}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
@@ -93,6 +100,10 @@ export default function Header({ onMenuClick, isAuthenticated = false }: HeaderP
           )}
         </div>
       </div>
+
+      <ProfileEditDialog open={showProfileEdit} onOpenChange={setShowProfileEdit} />
+      <ProductFormDialog open={showProductForm} onOpenChange={setShowProductForm} mode="add" />
+      <CompanyFormDialog open={showCompanyForm} onOpenChange={setShowCompanyForm} mode="register" />
     </header>
   );
 }

@@ -18,12 +18,14 @@ import {
 import CompanyCard from "@/components/CompanyCard";
 import FilterPanel from "@/components/FilterPanel";
 import CompanyDetailModal from "@/components/CompanyDetailModal";
+import CompanyFormDialog from "@/components/CompanyFormDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 import productImage from "@assets/stock_images/construction_materia_151531d6.jpg";
 
 export default function BrowseCompanies() {
   const { t } = useLanguage();
   const [selectedCompany, setSelectedCompany] = useState<any>(null);
+  const [showCompanyForm, setShowCompanyForm] = useState(false);
 
   const companies = Array.from({ length: 8 }, (_, i) => ({
     id: `${i + 1}`,
@@ -111,12 +113,15 @@ export default function BrowseCompanies() {
 
       <Button
         size="lg"
+        onClick={() => setShowCompanyForm(true)}
         className="fixed top-24 right-6 rounded-full h-14 px-6 shadow-2xl z-40"
         data-testid="button-register-company"
       >
         <Plus className="h-5 w-5 mr-2" />
         {t("registerCompany")}
       </Button>
+
+      <CompanyFormDialog open={showCompanyForm} onOpenChange={setShowCompanyForm} mode="register" />
 
       {selectedCompany && (
         <CompanyDetailModal

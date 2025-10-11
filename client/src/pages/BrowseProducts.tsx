@@ -18,6 +18,7 @@ import {
 import ProductCard from "@/components/ProductCard";
 import FilterPanel from "@/components/FilterPanel";
 import ProductDetailModal from "@/components/ProductDetailModal";
+import ProductFormDialog from "@/components/ProductFormDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocation } from "wouter";
 import productImage from "@assets/stock_images/construction_materia_151531d6.jpg";
@@ -27,6 +28,7 @@ export default function BrowseProducts() {
   const [location] = useLocation();
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [showProductForm, setShowProductForm] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(location.split('?')[1]);
@@ -118,12 +120,15 @@ export default function BrowseProducts() {
 
       <Button
         size="lg"
+        onClick={() => setShowProductForm(true)}
         className="fixed top-24 right-6 rounded-full h-14 px-6 shadow-2xl z-40"
         data-testid="button-add-product"
       >
         <Plus className="h-5 w-5 mr-2" />
         {t("addProduct")}
       </Button>
+
+      <ProductFormDialog open={showProductForm} onOpenChange={setShowProductForm} mode="add" />
 
       {selectedProduct && (
         <ProductDetailModal
