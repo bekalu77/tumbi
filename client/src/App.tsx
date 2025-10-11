@@ -12,6 +12,7 @@ import Header from "@/components/Header";
 import Home from "@/pages/Home";
 import BrowseProducts from "@/pages/BrowseProducts";
 import BrowseCompanies from "@/pages/BrowseCompanies";
+import Favorites from "@/pages/Favorites";
 import About from "@/pages/About";
 import NotFound from "@/pages/not-found";
 
@@ -21,6 +22,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/products" component={BrowseProducts} />
       <Route path="/companies" component={BrowseCompanies} />
+      <Route path="/favorites" component={Favorites} />
       <Route path="/about" component={About} />
       <Route component={NotFound} />
     </Switch>

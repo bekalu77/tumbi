@@ -33,6 +33,8 @@ export default function BrowseProducts() {
     price: 450 + i * 50,
     unit: "bag",
     image: productImage,
+    companyPhone: "+251 11 123 4567",
+    companyEmail: "contact@samplecompany.com",
     madeOf: "Quality materials",
     description: "High-quality construction material suitable for all types of projects.",
     images: [productImage, productImage, productImage],
@@ -104,7 +106,7 @@ export default function BrowseProducts() {
 
       <Button
         size="lg"
-        className="fixed bottom-6 right-6 rounded-full h-14 px-6 shadow-2xl"
+        className="fixed top-24 right-6 rounded-full h-14 px-6 shadow-2xl z-40"
         data-testid="button-add-product"
       >
         <Plus className="h-5 w-5 mr-2" />

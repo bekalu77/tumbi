@@ -111,7 +111,7 @@ export default function BrowseCompanies() {
 
       <Button
         size="lg"
-        className="fixed bottom-6 right-6 rounded-full h-14 px-6 shadow-2xl"
+        className="fixed top-24 right-6 rounded-full h-14 px-6 shadow-2xl z-40"
         data-testid="button-register-company"
       >
         <Plus className="h-5 w-5 mr-2" />

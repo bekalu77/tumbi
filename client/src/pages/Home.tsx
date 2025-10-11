@@ -30,6 +30,8 @@ export default function Home() {
       price: 450,
       unit: "bag",
       image: productImage,
+      companyPhone: "+251 11 123 4567",
+      companyEmail: "contact@derba.com",
     },
     {
       id: "2",
@@ -39,6 +41,8 @@ export default function Home() {
       price: 2800,
       unit: "ton",
       image: productImage,
+      companyPhone: "+251 25 111 2233",
+      companyEmail: "info@ethsteel.com",
     },
     {
       id: "3",
@@ -48,6 +52,8 @@ export default function Home() {
       price: 180,
       unit: "m2",
       image: productImage,
+      companyPhone: "+251 11 555 6677",
+      companyEmail: "sales@addistiles.com",
     },
     {
       id: "4",
@@ -57,6 +63,8 @@ export default function Home() {
       price: 850,
       unit: "m2",
       image: productImage,
+      companyPhone: "+251 11 888 9900",
+      companyEmail: "info@forestproducts.com",
     },
   ];
 
