@@ -450,7 +450,7 @@ class SqliteStorage implements IStorage {
 
   async createJob(input: InsertJob & { id?: string }): Promise<Job> {
     const jobId = input.id || randomUUID();
-    const jobData = {
+    const jobData: typeof jobs.$inferInsert = {
       id: jobId,
       title: input.title!,
       category: input.category ?? null,
@@ -471,39 +471,22 @@ class SqliteStorage implements IStorage {
       createdAt: new Date(),
     };
     await db.insert(jobs).values(jobData);
-    return {
-      id: jobData.id,
-      title: jobData.title,
-      category: jobData.category,
-      description: jobData.description,
-      companyId: jobData.companyId,
-      userId: jobData.userId,
-      location: jobData.location,
-      salary: jobData.salary,
-      type: jobData.type,
-      position: jobData.position,
-      experience: jobData.experience,
-      requiredSkills: jobData.requiredSkills,
-      qualifications: jobData.qualifications,
-      howToApply: jobData.howToApply,
-      additionalNotes: jobData.additionalNotes,
-      applicationLink: jobData.applicationLink,
-      deadline: jobData.deadline,
-      createdAt: jobData.createdAt,
-    };
+    const newJob = await db.query.jobs.findFirst({ where: eq(jobs.id, jobId) });
+    if (!newJob) {
+      throw new Error("Failed to create job");
+    }
+    return newJob;
   }
 
   async updateJob(id: string, input: Partial<InsertJob>): Promise<Job> {
-    // Filter out undefined values from the input to prevent Drizzle from trying to set them to NULL
-    const updatePayload: Partial<typeof jobs.$inferInsert> = {};
-    for (const key in input) {
-      if (input[key as keyof InsertJob] !== undefined) {
-        (updatePayload as any)[key] = input[key as keyof InsertJob];
-      }
-    }
+    const updatePayload: Partial<typeof jobs.$inferInsert> = { ...input };
 
     await db.update(jobs).set(updatePayload).where(eq(jobs.id, id));
-    return (await this.getJob(id))!;
+    const updatedJob = await this.getJob(id);
+    if (!updatedJob) {
+      throw new Error("Failed to fetch updated job");
+    }
+    return updatedJob;
   }
 
   async deleteJob(id: string): Promise<void> {
