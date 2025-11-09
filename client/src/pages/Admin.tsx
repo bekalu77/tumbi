@@ -14,48 +14,10 @@ import ProductDetailModal from "@/components/ProductDetailModal";
 import AdCard from "@/components/AdCard";
 import TenderFormDialog from "@/components/TenderFormDialog";
 import { Search as SearchIcon } from "lucide-react";
-import { ItemWithRelations, Company, Job } from "@shared/schema";
+import { Company, Job } from "@shared/schema";
 import matter from "gray-matter";
-import yaml from 'js-yaml';
 import { toast } from "sonner";
-
-type Product = ItemWithRelations;
-
-interface Tender {
-  id: string;
-  tenderNo: number;
-  title: string;
-  bidOpeningDate: string;
-  region: string;
-  category: string;
-  publishedOn: string;
-  featured?: boolean;
-  content: string;
-}
-
-interface Article {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string;
-  content: string;
-  category: string;
-  published_date: string;
-  author: string;
-  fileType?: 'md' | 'html';
-  image?: string;
-  read_time?: string;
-  featured?: boolean;
-  views?: number;
-}
-
-interface Ad {
-  id: string;
-  title: string;
-  link: string;
-  banner: string;
-  status: 'on' | 'off';
-}
+import { Product, Tender, Article, Ad, ApiError } from "@/types";
 
 export default function Admin() {
   const { t } = useLanguage();
@@ -125,7 +87,7 @@ export default function Admin() {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const data = await response.json();
+      const data = await response.json() as { products?: Product[], companies?: Company[], jobs?: Job[], tenders?: Tender[] };
       switch (type) {
         case "products":
           const newProducts = data.products || [];
@@ -224,7 +186,7 @@ export default function Admin() {
               if (!response.ok) {
                 throw new Error('Failed to fetch ads data');
               }
-              const adsData = await response.json();
+              const adsData = await response.json() as Ad[];
               setAds(adsData);
             } catch (err) {
               console.error("Error fetching ad data:", err);
@@ -270,7 +232,7 @@ export default function Admin() {
         // Refresh the articles list
         handleTabChange("articles");
       } else {
-        const errorData = await response.json();
+        const errorData = await response.json() as ApiError;
         alert(`Upload failed: ${errorData.error}`);
       }
     } catch (error) {
@@ -315,7 +277,7 @@ export default function Admin() {
         setEditingAdId(null); // Reset editing state
         handleTabChange("ads"); // Refresh ads list
       } else {
-        const errorData = await response.json();
+        const errorData = await response.json() as ApiError;
         alert(`Operation failed: ${errorData.error || errorData.message || 'Unknown error'}`);
       }
     } catch (error) {
@@ -360,7 +322,7 @@ export default function Admin() {
           setSelectedAd(null); // Close the modal
           alert('Ad deleted successfully!');
         } else {
-          const errorData = await response.json();
+          const errorData = await response.json() as ApiError;
           alert(`Failed to delete ad: ${errorData.error}`);
         }
       } catch (error) {
@@ -384,7 +346,7 @@ export default function Admin() {
         // Refresh ads list
         handleTabChange("ads");
       } else {
-        const errorData = await response.json();
+        const errorData = await response.json() as ApiError;
         alert(`Failed to update ad: ${errorData.error}`);
       }
     } catch (error) {
@@ -404,7 +366,7 @@ export default function Admin() {
           setFilteredProducts(filteredProducts.filter((p) => p.id !== id));
           setSelectedProduct(null);
         } else {
-          const errorData = await response.json();
+          const errorData = await response.json() as ApiError;
           alert(`Failed to delete product: ${errorData.message}`);
         }
       } catch (error) {
@@ -423,7 +385,7 @@ export default function Admin() {
         setCompanies(companies.filter((c) => c.id !== id));
         setFilteredCompanies(filteredCompanies.filter((c) => c.id !== id));
       } else {
-        const errorData = await response.json();
+        const errorData = await response.json() as ApiError;
         alert(`Failed to delete company: ${errorData.message}`);
       }
     } catch (error) {

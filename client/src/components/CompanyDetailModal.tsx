@@ -24,6 +24,24 @@ import {
 import ProductCard from "./ProductCard";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
+import { ApiError } from "@/types";
+
+interface CompanyType {
+  id: string;
+  name: string;
+}
+
+interface CompanyProduct {
+  id: string;
+  name: string;
+  companyName: string;
+  categoryName: string;
+  price: number;
+  unit: string;
+  imageUrls: string[];
+  companyPhone?: string;
+  companyEmail?: string;
+}
 
 interface CompanyDetailModalProps {
   open: boolean;
@@ -77,7 +95,7 @@ export default function CompanyDetailModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { data: companyTypes, isLoading: isLoadingCompanyTypes } = useQuery({
+  const { data: companyTypes, isLoading: isLoadingCompanyTypes } = useQuery<CompanyType[], Error>({
     queryKey: ["companyTypes"],
     queryFn: async () => {
       const res = await fetch('/api/company-types');
@@ -87,7 +105,7 @@ export default function CompanyDetailModal({
     enabled: isEditing, // Only fetch if in edit mode
   });
 
-  const { data: companyProducts, isLoading: isLoadingCompanyProducts } = useQuery({
+  const { data: companyProducts, isLoading: isLoadingCompanyProducts } = useQuery<CompanyProduct[], Error>({
     queryKey: ["companyProducts", company.id],
     queryFn: async () => {
       const res = await fetch(`/api/companies/${company.id}/products`);
@@ -180,7 +198,7 @@ export default function CompanyDetailModal({
       }
       if (selectedTypeId) {
         submissionData.append('typeId', selectedTypeId);
-        const selectedType = companyTypes?.find((ct: any) => ct.id === selectedTypeId);
+      const selectedType = companyTypes?.find((ct) => ct.id === selectedTypeId);
         if (selectedType) {
           submissionData.append('companyType', selectedType.name);
         }
@@ -194,11 +212,11 @@ export default function CompanyDetailModal({
         body: submissionData,
       });
 
-      const responseData = await response.json();
-
       if (!response.ok) {
-        throw new Error(responseData.message || 'Failed to update company');
+        const errorData = await response.json() as ApiError;
+        throw new Error(errorData.message || 'Failed to update company');
       }
+      const responseData = await response.json();
 
       setIsEditing(false); // Switch back to view mode after successful edit
       onOpenChange(false); // Close the modal
@@ -415,7 +433,7 @@ export default function CompanyDetailModal({
                       <SelectValue placeholder={isLoadingCompanyTypes ? "Loading types..." : "Select company type"} />
                     </SelectTrigger>
                     <SelectContent>
-                      {companyTypes?.map((ct: any) => (
+                      {companyTypes?.map((ct) => (
                         <SelectItem key={ct.id} value={ct.id}>{ct.name}</SelectItem>
                       ))}
                     </SelectContent>
@@ -532,7 +550,7 @@ export default function CompanyDetailModal({
                     Loading products...
                   </div>
                 ) : companyProducts && companyProducts.length > 0 ? (
-                  companyProducts.map((product: any) => (
+                  companyProducts.map((product) => (
                     <ProductCard
                       key={product.id}
                       id={product.id}

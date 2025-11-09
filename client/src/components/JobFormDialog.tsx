@@ -25,6 +25,8 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { ApiError } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface JobFormDialogProps {
   open: boolean;
@@ -36,12 +38,12 @@ interface JobFormDialogProps {
 
 interface JobFormData {
   title: string;
-  category?: string;
   description: string;
   companyId: string;
   location: string;
-  salary?: string;
   type: string;
+  category?: string;
+  salary?: string;
   position?: string;
   experience?: string;
   requiredSkills?: string;
@@ -49,7 +51,7 @@ interface JobFormData {
   howToApply?: string;
   additionalNotes?: string;
   applicationLink?: string;
-  deadline?: string; // Use string for input type="date"
+  deadline?: string;
 }
 
 async function fetchCompaniesByUserId(userId: string): Promise<Company[]> {
@@ -80,6 +82,7 @@ export default function JobFormDialog({
   });
 
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<JobFormData>({
+    resolver: zodResolver(createJobSchema.partial()),
     defaultValues: {
       title: job?.title ?? "",
       category: job?.category ?? "",
@@ -90,7 +93,7 @@ export default function JobFormDialog({
       type: job?.type ?? "",
       position: job?.position ?? "",
       experience: job?.experience ?? "",
-      requiredSkills: job?.requiredSkills ?? "",
+      requiredSkills: Array.isArray(job?.requiredSkills) ? job.requiredSkills.join(', ') : "",
       qualifications: job?.qualifications ?? "",
       howToApply: job?.howToApply ?? "",
       additionalNotes: job?.additionalNotes ?? "",
@@ -111,7 +114,7 @@ export default function JobFormDialog({
         type: job.type || "",
         position: job.position || "",
         experience: job.experience || "",
-        requiredSkills: job.requiredSkills || "",
+        requiredSkills: Array.isArray(job.requiredSkills) ? job.requiredSkills.join(', ') : "",
         qualifications: job.qualifications || "",
         howToApply: job.howToApply || "",
         additionalNotes: job.additionalNotes || "",
@@ -151,7 +154,7 @@ export default function JobFormDialog({
         body: JSON.stringify(newJob),
       });
       if (!res.ok) {
-        const errorData = await res.json();
+        const errorData = await res.json() as ApiError;
         throw new Error(errorData.message || "Failed to create job");
       }
       return res.json();
@@ -184,7 +187,7 @@ export default function JobFormDialog({
         body: JSON.stringify(updatedJob),
       });
       if (!res.ok) {
-        const errorData = await res.json();
+        const errorData = await res.json() as ApiError;
         throw new Error(errorData.message || "Failed to update job");
       }
       return res.json();
@@ -215,32 +218,18 @@ export default function JobFormDialog({
       return;
     }
 
-    const jobPayload = { // Use createJobSchema for validation, but construct payload manually
-      title: data.title,
-      category: data.category,
-      description: data.description,
-      companyId: data.companyId,
-      location: data.location,
-      salary: data.salary,
-      type: data.type,
-      position: data.position,
-      experience: data.experience,
-      requiredSkills: data.requiredSkills,
-      qualifications: data.qualifications,
-      howToApply: data.howToApply,
-      additionalNotes: data.additionalNotes,
-      applicationLink: data.applicationLink,
-      deadline: data.deadline ? new Date(data.deadline) : undefined, // Convert to Date object
-      userId: user!.id, // Non-null assertion as isAuthenticated check is done
+    const jobPayload = {
+      ...data,
+      requiredSkills: data.requiredSkills ? data.requiredSkills.split(',').map(s => s.trim()) : [],
+      deadline: data.deadline ? new Date(data.deadline) : undefined,
+      userId: user!.id,
       createdAt: new Date(),
     };
 
     if (mode === "add") {
-      const parsedPayload = createJobSchema.parse(jobPayload); // Validate with createJobSchema
-      createJobMutation.mutate(parsedPayload);
+      createJobMutation.mutate(jobPayload as InsertJob);
     } else {
-      const parsedPayload = createJobSchema.partial().parse(jobPayload); // Validate with partial schema for updates
-      updateJobMutation.mutate(parsedPayload);
+      updateJobMutation.mutate(jobPayload as Partial<InsertJob>);
     }
   };
 
