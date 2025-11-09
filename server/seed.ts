@@ -208,9 +208,9 @@ async function seed() {
         userId: demoUser.id,
         categoryId: defaultProductCategoryId,
         price: 100.00,
-        unit: "pcs",
+        unit: "piece",
         description: "A default product for testing.",
-        imageUrls: JSON.stringify([]), // No placeholder image for seeded products
+        imageUrls: [], // No placeholder image for seeded products
         createdAt: new Date(),
       },
     ]);

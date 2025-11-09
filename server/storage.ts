@@ -44,7 +44,7 @@ const mapDrizzleJobToJob = (drizzleJob: DrizzleRawJob): Job => ({
   type: drizzleJob.type ?? null,
   position: drizzleJob.position ?? null,
   experience: drizzleJob.experience ?? null,
-  requiredSkills: drizzleJob.requiredSkills ?? null,
+  requiredSkills: drizzleJob.requiredSkills ?? [],
   qualifications: drizzleJob.qualifications ?? null,
   howToApply: drizzleJob.howToApply ?? null,
   additionalNotes: drizzleJob.additionalNotes ?? null,
@@ -326,23 +326,22 @@ class SqliteStorage implements IStorage {
       price: input.price ?? null,
       unit: input.unit ?? null,
       description: input.description ?? null,
-      imageUrls: input.imageUrls ? JSON.stringify(input.imageUrls) : null, // Stringify here for DB
+      imageUrls: input.imageUrls ?? [],
       createdAt: new Date(),
     };
     await db.insert(items).values(itemToInsert);
-    const createdItem: Item = {
-      id,
-      name: input.name!,
-      companyId: input.companyId ?? null,
-      userId: input.userId ?? null,
-      categoryId: input.categoryId ?? null,
-      price: input.price ?? null,
-      unit: input.unit ?? null,
-      description: input.description ?? null,
-      imageUrls: input.imageUrls ?? null,
-      createdAt: new Date(),
+    return {
+      id: itemToInsert.id,
+      name: itemToInsert.name,
+      companyId: itemToInsert.companyId,
+      userId: itemToInsert.userId,
+      categoryId: itemToInsert.categoryId,
+      price: itemToInsert.price,
+      unit: itemToInsert.unit,
+      description: itemToInsert.description,
+      imageUrls: itemToInsert.imageUrls,
+      createdAt: itemToInsert.createdAt,
     };
-    return createdItem;
   }
 
   async updateItem(id: string, input: Partial<InsertItem>): Promise<ItemWithRelations> {
@@ -351,7 +350,7 @@ class SqliteStorage implements IStorage {
     const updatePayload: Partial<typeof items.$inferInsert> = { ...restInput };
 
     if (imageUrls !== undefined) {
-      updatePayload.imageUrls = imageUrls ? JSON.stringify(imageUrls) : null;
+      updatePayload.imageUrls = imageUrls ?? [];
     }
 
     await db.update(items).set(updatePayload).where(eq(items.id, id));
@@ -451,7 +450,7 @@ class SqliteStorage implements IStorage {
 
   async createJob(input: InsertJob & { id?: string }): Promise<Job> {
     const jobId = input.id || randomUUID();
-    const jobData: Job = { // Explicitly type as Job
+    const jobData = {
       id: jobId,
       title: input.title!,
       category: input.category ?? null,
@@ -463,7 +462,7 @@ class SqliteStorage implements IStorage {
       type: input.type ?? null,
       position: input.position ?? null,
       experience: input.experience ?? null,
-      requiredSkills: input.requiredSkills ?? null,
+      requiredSkills: input.requiredSkills ?? [],
       qualifications: input.qualifications ?? null,
       howToApply: input.howToApply ?? null,
       additionalNotes: input.additionalNotes ?? null,
@@ -472,12 +471,31 @@ class SqliteStorage implements IStorage {
       createdAt: new Date(),
     };
     await db.insert(jobs).values(jobData);
-    return jobData;
+    return {
+      id: jobData.id,
+      title: jobData.title,
+      category: jobData.category,
+      description: jobData.description,
+      companyId: jobData.companyId,
+      userId: jobData.userId,
+      location: jobData.location,
+      salary: jobData.salary,
+      type: jobData.type,
+      position: jobData.position,
+      experience: jobData.experience,
+      requiredSkills: jobData.requiredSkills,
+      qualifications: jobData.qualifications,
+      howToApply: jobData.howToApply,
+      additionalNotes: jobData.additionalNotes,
+      applicationLink: jobData.applicationLink,
+      deadline: jobData.deadline,
+      createdAt: jobData.createdAt,
+    };
   }
 
   async updateJob(id: string, input: Partial<InsertJob>): Promise<Job> {
     // Filter out undefined values from the input to prevent Drizzle from trying to set them to NULL
-    const updatePayload: Partial<InsertJob> = {};
+    const updatePayload: Partial<typeof jobs.$inferInsert> = {};
     for (const key in input) {
       if (input[key as keyof InsertJob] !== undefined) {
         (updatePayload as any)[key] = input[key as keyof InsertJob];

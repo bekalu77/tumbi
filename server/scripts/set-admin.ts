@@ -10,7 +10,7 @@ async function setAdmin(username: string) {
 
   try {
     console.log(`Attempting to set role for user: ${username}`);
-    const user = await db.select().from(users).where(eq(users.username, username)).get();
+    const user = await db.query.users.findFirst({ where: eq(users.username, username) });
 
     if (!user) {
       console.error(`User with username "${username}" not found.`);
