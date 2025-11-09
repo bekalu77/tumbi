@@ -1,0 +1,649 @@
+{
+  "users": [
+    {
+      "username": "demo",
+      "password": "demo123",
+      "id": "b579803f-a35a-49a7-b0c5-fc86c1e4fd6a"
+    },
+    {
+      "id": "8daa3ac6-6fc3-43ef-a1aa-ac5ec48ab7fd",
+      "username": "bekalu77",
+      "password": "bekalu",
+      "fullName": "Yekalu Tadesse Ambelu",
+      "email": "bekalu77@gmail.com",
+      "phone": "+251911289217",
+      "company": "Niqu PLC",
+      "bio": "CEO ",
+      "location": "ADDIS ABABA",
+      "profilePictureUrl": "/api/uploads/profile-1760447288659-418439349.png"
+    }
+  ],
+  "categories": [
+    {
+      "id": "48dec0be-927e-434c-9b11-fe3c9b2556d2",
+      "name": "Cement",
+      "icon": null,
+      "createdAt": "2025-10-13T08:16:38.818Z"
+    },
+    {
+      "id": "8abf626d-8418-4b8c-b370-ad4de9abf505",
+      "name": "Steel Rebar",
+      "icon": null,
+      "createdAt": "2025-10-13T08:16:38.820Z"
+    },
+    {
+      "id": "a6ead392-32ba-4d37-bb2f-1550bec42e5c",
+      "name": "Wood",
+      "icon": null,
+      "createdAt": "2025-10-13T08:16:38.820Z"
+    },
+    {
+      "id": "de7cfd81-2c1e-4aad-919d-2fe368a650ed",
+      "name": "Tiles",
+      "icon": null,
+      "createdAt": "2025-10-13T08:16:38.821Z"
+    },
+    {
+      "id": "c85e6297-d684-470e-87d9-17df4393930c",
+      "name": "Paint",
+      "icon": null,
+      "createdAt": "2025-10-13T08:16:38.822Z"
+    },
+    {
+      "id": "93e45c6a-e87c-4a27-a913-25597ca9043e",
+      "name": "Blocks",
+      "icon": null,
+      "createdAt": "2025-10-13T08:16:38.823Z"
+    },
+    {
+      "id": "27c5a621-8f71-4e81-98a8-57d2b95e45ff",
+      "name": "HCB",
+      "parentId": "93e45c6a-e87c-4a27-a913-25597ca9043e",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "b3d7e1d1-9b3a-4e1e-8f0c-3e9b6b1e7b1a",
+      "name": "Bricks",
+      "parentId": "93e45c6a-e87c-4a27-a913-25597ca9043e",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "f4e1b2c1-8b3a-4e1e-8f0c-3e9b6b1e7b1a",
+      "name": "Hydraform",
+      "parentId": "93e45c6a-e87c-4a27-a913-25597ca9043e",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+      "name": "Gypsum",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "b2c3d4e5-f6a7-8901-2345-67890abcdef1",
+      "name": "Gypsum Powder",
+      "parentId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "c3d4e5f6-a7b8-9012-3456-7890abcdef12",
+      "name": "Gypsum Block",
+      "parentId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "d4e5f6a7-b8c9-0123-4567-890abcdef123",
+      "name": "Gypsum Board",
+      "parentId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "e5f6a7b8-c9d0-1234-5678-90abcdef1234",
+      "name": "Accessories",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "f6a7b8c9-d0e1-2345-6789-0abcdef12345",
+      "name": "Hinges",
+      "parentId": "e5f6a7b8-c9d0-1234-5678-90abcdef1234",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "a7b8c9d0-e1f2-3456-7890-1bcdef123456",
+      "name": "Nails",
+      "parentId": "e5f6a7b8-c9d0-1234-5678-90abcdef1234",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "b8c9d0e1-f2a3-4567-8901-cdef12345678",
+      "name": "Screws",
+      "parentId": "e5f6a7b8-c9d0-1234-5678-90abcdef1234",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "c9d0e1f2-a3b4-5678-9012-def123456789",
+      "name": "Aluminium",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "d0e1f2a3-b4c5-6789-0123-ef1234567890",
+      "name": "Glass",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "e1f2a3b4-c5d6-7890-1234-f12345678901",
+      "name": "Scaffoldings",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "f2a3b4c5-d6e7-8901-2345-123456789012",
+      "name": "Electric materials",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "a3b4c5d6-e7f8-9012-3456-234567890123",
+      "name": "Sanitary material",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "b4c5d6e7-f8a9-0123-4567-345678901234",
+      "name": "Metals",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "c5d6e7f8-a9b0-1234-5678-456789012345",
+      "name": "RHS",
+      "parentId": "b4c5d6e7-f8a9-0123-4567-345678901234",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "d6e7f8a9-b0c1-2345-6789-567890123456",
+      "name": "CHS",
+      "parentId": "b4c5d6e7-f8a9-0123-4567-345678901234",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "e7f8a9b0-c1d2-3456-7890-678901234567",
+      "name": "LTZ",
+      "parentId": "b4c5d6e7-f8a9-0123-4567-345678901234",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "f8a9b0c1-d2e3-4567-8901-789012345678",
+      "name": "Metal sheets",
+      "parentId": "b4c5d6e7-f8a9-0123-4567-345678901234",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "a9b0c1d2-e3f4-5678-9012-890123456789",
+      "name": "Roofing",
+      "parentId": "b4c5d6e7-f8a9-0123-4567-345678901234",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "b0c1d2e3-f4a5-6789-0123-901234567890",
+      "name": "Tools",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "c1d2e3f4-a5b6-7890-1234-012345678901",
+      "name": "Power tools",
+      "parentId": "b0c1d2e3-f4a5-6789-0123-901234567890",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "d2e3f4a5-b6c7-8901-2345-123456789012",
+      "name": "Non-power tools",
+      "parentId": "b0c1d2e3-f4a5-6789-0123-901234567890",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "e3f4a5b6-c7d8-9012-3456-234567890123",
+      "name": "Chemicals",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "f4a5b6c7-d8e9-0123-4567-345678901234",
+      "name": "Doors",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "a5b6c7d8-e9f0-1234-5678-456789012345",
+      "name": "Stones",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "b6c7d8e9-f0a1-2345-6789-567890123456",
+      "name": "Marble",
+      "parentId": "a5b6c7d8-e9f0-1234-5678-456789012345",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    },
+    {
+      "id": "c7d8e9f0-a1b2-3456-7890-678901234567",
+      "name": "Granite",
+      "parentId": "a5b6c7d8-e9f0-1234-5678-456789012345",
+      "icon": null,
+      "createdAt": "2025-10-15T06:15:00.000Z"
+    }
+  ],
+  "companies": [
+    {
+      "id": "e437be18-ed55-4106-87ba-4643bd395e4d",
+      "name": "Derba Midroc Cement",
+      "email": null,
+      "phone": null,
+      "createdAt": "2025-10-13T08:16:38.824Z"
+    },
+    {
+      "id": "9247cee4-b836-462f-a4de-f70120581e08",
+      "name": "Ethiopian Steel",
+      "email": null,
+      "phone": null,
+      "createdAt": "2025-10-13T08:16:38.824Z"
+    },
+    {
+      "id": "08c893ff-b5fb-4cdf-813a-287fe6d23bf3",
+      "name": "Addis Tiles",
+      "email": null,
+      "phone": null,
+      "createdAt": "2025-10-13T08:16:38.825Z"
+    },
+    {
+      "id": "c42e27c1-3eeb-40b7-aa91-7914f5d7efa7",
+      "name": "Forest Products",
+      "email": null,
+      "phone": null,
+      "createdAt": "2025-10-13T08:16:38.825Z"
+    },
+    {
+      "id": "d3d4eaa8-0d0b-4175-a064-035287d2fe28",
+      "name": "BL/AA/2/0053121/2017",
+      "email": "bekalu77@gmail.com",
+      "phone": "+251911289217",
+      "description": "dfd dsfsd sdfsdfsd  sdfds ffdsf sdfdsfds ",
+      "location": "ADDIS ABABA",
+      "logoUrl": "/api/uploads/company-1760423409679-83170005.jpg",
+      "createdAt": "2025-10-14T06:30:09.693Z"
+    },
+    {
+      "id": "253b1fe7-727d-47b0-b287-a3b7a03fb0ca",
+      "name": "niqu",
+      "email": "bekalu77@gmail.com",
+      "phone": "+251911289217",
+      "description": "gfdg dsgfg dfgfg dg fg fg fsdg fdsg",
+      "location": "ADDIS ABABA",
+      "logoUrl": "/api/uploads/company-1760423526387-732888141.PNG",
+      "createdAt": "2025-10-14T06:32:06.399Z"
+    },
+    {
+      "id": "dcaf7e4b-694f-47d5-97f1-592555555997",
+      "name": "real",
+      "email": "bekalu77@gmail.com",
+      "phone": "+251911289217",
+      "description": "fgfgfgffgfgfgffgfgffgfgfgf fgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgffgfgfgf",
+      "location": "ADDIS ABABA",
+      "logoUrl": "/api/uploads/company-1760429644092-257163448.PNG",
+      "createdAt": "2025-10-14T08:14:04.115Z"
+    },
+    {
+      "userId": "b579803f-a35a-49a7-b0c5-fc86c1e4fd6a",
+      "name": "Niqu CAE",
+      "email": "bekalu77@gmail.com",
+      "phone": "+251911289217",
+      "description": "cosnulting Architects ",
+      "location": "ADDIS ABABA",
+      "logoUrl": "/api/uploads/company-1760442840649-648914221.png",
+      "id": "504eae95-6eb1-40f5-8f73-cff3b1df0193",
+      "createdAt": "2025-10-14T11:54:00.708Z"
+    },
+    {
+      "userId": "8daa3ac6-6fc3-43ef-a1aa-ac5ec48ab7fd",
+      "name": "Niqu Cement Distributer",
+      "email": "bekalu77@gmail.com",
+      "phone": "+251911289217",
+      "description": "sdfsdf sdfdsf dsf sdfds",
+      "location": "ADDIS ABABA",
+      "logoUrl": "/api/uploads/company-1760500098420-653434773.PNG",
+      "id": "dc4d1a27-f4c8-474d-884d-8e1774dd2945",
+      "createdAt": "2025-10-15T03:48:18.428Z"
+    }
+  ],
+  "products": [
+    {
+      "id": "8b170a97-c161-4731-9cc1-78043e05e165",
+      "createdAt": "2025-10-13T08:16:38.850Z",
+      "name": "Portland Cement Grade 42.5",
+      "categoryName": "Cement",
+      "companyName": "Derba Midroc Cement",
+      "price": "450",
+      "unit": "bag",
+      "imageUrl": "/uploads/construction_materia_151531d6.jpg",
+      "companyPhone": "+251 11 123 4567",
+      "companyEmail": "contact@derba.com",
+      "madeOf": "Portland clinker and gypsum",
+      "description": "High-quality cement suitable for all types of construction projects. Meets Ethiopian standards."
+    },
+    {
+      "id": "6fa5b445-aa24-4ecb-9784-eab3fe88c5e0",
+      "createdAt": "2025-10-13T08:16:38.850Z",
+      "name": "Steel Rebar 12mm",
+      "categoryName": "Steel",
+      "companyName": "Ethiopian Steel",
+      "price": "2800",
+      "unit": "ton",
+      "imageUrl": "/uploads/construction_materia_151531d6.jpg",
+      "companyPhone": "+251 25 111 2233",
+      "companyEmail": "info@ethsteel.com",
+      "madeOf": "High-grade steel alloy",
+      "description": "Premium quality steel rebar for reinforced concrete structures. Corrosion resistant."
+    },
+    {
+      "id": "6c7cadc6-8d0c-4dd9-b265-208cf554a57b",
+      "createdAt": "2025-10-13T08:16:38.851Z",
+      "name": "Ceramic Floor Tiles",
+      "categoryName": "Tiles",
+      "companyName": "Addis Tiles",
+      "price": "180",
+      "unit": "m2",
+      "imageUrl": "/uploads/construction_materia_151531d6.jpg",
+      "companyPhone": "+251 11 555 6677",
+      "companyEmail": "sales@addistiles.com",
+      "madeOf": "High-quality ceramic",
+      "description": "Durable and beautiful ceramic tiles perfect for residential and commercial spaces."
+    },
+    {
+      "id": "5b10b67a-b022-4bc2-b049-97b65622d4ac",
+      "createdAt": "2025-10-13T08:16:38.851Z",
+      "name": "Hardwood Planks",
+      "categoryName": "Wood",
+      "companyName": "Forest Products",
+      "price": "850",
+      "unit": "m2",
+      "imageUrl": "/uploads/construction_materia_151531d6.jpg",
+      "companyPhone": "+251 11 888 9900",
+      "companyEmail": "info@forestproducts.com",
+      "madeOf": "Sustainable hardwood",
+      "description": "Premium hardwood planks from sustainable sources. Perfect for flooring and furniture."
+    },
+    {
+      "id": "0f576749-5376-45da-a9d6-a26e7ce566cf",
+      "createdAt": "2025-10-13T11:40:21.783Z",
+      "name": "niqu",
+      "categoryName": "Steel",
+      "companyName": "Default Company",
+      "price": "10",
+      "unit": "bag",
+      "imageUrl": "/api/uploads/product-1760355621766-476195773.PNG",
+      "companyPhone": "",
+      "companyEmail": "",
+      "madeOf": "cement",
+      "description": "hhhhh  fgfg dfg dfg dfg "
+    },
+    {
+      "id": "3d86e076-43dc-46f6-932a-bf3353d6d031",
+      "createdAt": "2025-10-14T08:24:26.445Z",
+      "name": "land ",
+      "categoryName": "Wood",
+      "companyName": "Default Company",
+      "price": "4",
+      "unit": "bag",
+      "madeOf": "cement",
+      "description": "fsf stock: 1\r\n:5000/api/products:1  Failed to load resource: net::ERR_CONNECTION_REFUSEDUnderstand this error\r\nProductFormDialog.tsx:146 Error saving product: TypeError: Failed to fetch\r\n    at onSubmit (ProductFormDialog.tsx:121:30)\r\n    at react-hook-form.js?v=c90c73c7:1465:15\r\nonSubmit @ ProductFormDialog.tsx:146Understand this error",
+      "imageUrl": "/api/uploads/product-1760430266419-192581740.PNG",
+      "companyPhone": "",
+      "companyEmail": ""
+    },
+    {
+      "userId": "b579803f-a35a-49a7-b0c5-fc86c1e4fd6a",
+      "companyId": "504eae95-6eb1-40f5-8f73-cff3b1df0193",
+      "name": "High rize design",
+      "categoryId": "48dec0be-927e-434c-9b11-fe3c9b2556d2",
+      "price": "0.04",
+      "unit": "bag",
+      "imageUrl": "/api/uploads/product-1760442896789-101299307.png",
+      "madeOf": "",
+      "description": "niqu niqu niwuuuuuuuuuuuuu",
+      "id": "dfe56a28-b71f-4ae9-9fcb-18ada357dba1",
+      "createdAt": "2025-10-14T11:54:56.821Z"
+    },
+    {
+      "userId": "8daa3ac6-6fc3-43ef-a1aa-ac5ec48ab7fd",
+      "companyId": "dc4d1a27-f4c8-474d-884d-8e1774dd2945",
+      "name": "cement ",
+      "categoryId": "48dec0be-927e-434c-9b11-fe3c9b2556d2",
+      "price": "1700",
+      "unit": "Qtl",
+      "imageUrl": "/api/uploads/product-1760500353383-332856502.jpg",
+      "madeOf": "",
+      "description": "fast supply with free delivery",
+      "id": "58477a6a-53ce-4a88-980a-866f03bff18e",
+      "createdAt": "2025-10-15T03:52:33.385Z"
+    }
+  ],
+  "cities": [
+    {
+      "id": "8b9ddde0-23f3-451b-8235-bfd57be9982f",
+      "name": "Addis Ababa"
+    },
+    {
+      "id": "cb32e94d-9fde-4f29-8a11-f1ea357d6e24",
+      "name": "Adama"
+    },
+    {
+      "id": "aaa434b3-fe48-48b7-90fa-7bd5e863aeb7",
+      "name": "Mek'ele"
+    },
+    {
+      "id": "7cc2090e-8597-4a27-a990-04cbcc7a0ac2",
+      "name": "Gondar"
+    },
+    {
+      "id": "cc68b873-441b-46ee-9880-e0cea73ff32c",
+      "name": "Awassa"
+    },
+    {
+      "id": "58bc3b10-b27d-43e1-97e4-45e75e77861a",
+      "name": "Bahir Dar"
+    },
+    {
+      "id": "6b0ba3b2-b3de-4d47-be17-940206af0e72",
+      "name": "Dire Dawa"
+    },
+    {
+      "id": "b7888213-ed8a-43ac-a1f9-8b4ac216b52e",
+      "name": "Dessie"
+    },
+    {
+      "id": "5a26424c-af18-4518-a29b-c067d9efd87f",
+      "name": "Jimma"
+    },
+    {
+      "id": "09ef83a7-8816-4df3-9d76-4ce9f4a0e16e",
+      "name": "Jijiga"
+    },
+    {
+      "id": "efad0c35-495b-41c4-b3c7-da4eca70bccb",
+      "name": "Shashamane"
+    },
+    {
+      "id": "9b60198e-69ec-42fe-a9d1-dacf2573bf45",
+      "name": "Bishoftu"
+    },
+    {
+      "id": "c7d2d226-f25b-4f2d-9a4c-31a655f2401a",
+      "name": "Sodo"
+    },
+    {
+      "id": "c321e94a-7272-4a8b-861c-76a1078ceef0",
+      "name": "Arba Minch"
+    },
+    {
+      "id": "a0524ba3-4839-4b2f-aa92-8055c4d66b40",
+      "name": "Hosaena"
+    },
+    {
+      "id": "fae892d3-9146-426d-a86f-965c821e4a80",
+      "name": "Harar"
+    },
+    {
+      "id": "a9951949-872f-483c-a17f-c42ed4a86050",
+      "name": "Dilla"
+    },
+    {
+      "id": "489bde2f-e4ca-4af1-8b29-6384c1cedcd9",
+      "name": "Nekemte"
+    },
+    {
+      "id": "fc07534c-6d5f-404f-a59d-90460041abb1",
+      "name": "Debre Birhan"
+    },
+    {
+      "id": "e3e7a4c2-ed30-400a-8cd8-fa374b02daee",
+      "name": "Debre Mark'os"
+    },
+    {
+      "id": "e1b4e86f-d647-49c5-bae1-a747445cf5f5",
+      "name": "Kombolcha"
+    },
+    {
+      "id": "dac23116-05cd-48b9-ae9e-57f2ebf61584",
+      "name": "Debre Tabor"
+    },
+    {
+      "id": "cb8cb277-195b-4eec-b063-081f03cb3fbc",
+      "name": "Adigrat"
+    },
+    {
+      "id": "38c03974-0660-494d-833a-c27d4cb6fe02",
+      "name": "Weldiya"
+    },
+    {
+      "id": "280fd90d-6442-4e76-9eec-32fb06ab847d",
+      "name": "Sebeta"
+    },
+    {
+      "id": "bc5f4bc2-a167-499e-a26a-ab92c6adedf6",
+      "name": "Burayu"
+    },
+    {
+      "id": "feefb374-f09f-4356-94e4-29ca4c789fd3",
+      "name": "Ambo"
+    },
+    {
+      "id": "1103853f-44da-43a8-8cb2-5f4a0662a373",
+      "name": "Asella"
+    },
+    {
+      "id": "aa1d95f6-3c54-4289-80d8-0d9a1bfeaa9e",
+      "name": "Gambela"
+    },
+    {
+      "id": "606c7a41-9d84-4fd9-92db-8c223284afd6",
+      "name": "Asosa"
+    },
+    {
+      "id": "b05e187e-4531-4529-8a68-35a2932e7f9d",
+      "name": "Bonga"
+    },
+    {
+      "id": "874acaa6-1f95-4d0f-a5c1-ed131e7b9f7c",
+      "name": "Goba"
+    },
+    {
+      "id": "55eb6f96-7800-420e-8ce9-7aa5b0b9a174",
+      "name": "Semera"
+    },
+    {
+      "id": "0c07277f-9bdd-4e60-a27e-336e91e49eb9",
+      "name": "Robe"
+    },
+    {
+      "id": "26e8f459-be85-4911-bf68-746fca4344de",
+      "name": "Ziway"
+    },
+    {
+      "id": "bf907706-3eeb-469c-96fa-2c040b593c37",
+      "name": "Alamata"
+    },
+    {
+      "id": "f919298b-82a0-44d9-8242-1c967a614419",
+      "name": "Welkite"
+    },
+    {
+      "id": "ae8e8547-e711-4d48-8718-04c9d71397d5",
+      "name": "Mota"
+    },
+    {
+      "id": "d0fa67b2-5478-4cd2-b9f7-1c45c51eadef",
+      "name": "Butajira"
+    },
+    {
+      "id": "9755ee6f-c913-453b-bfaa-0fb62fb4b3b2",
+      "name": "Korem"
+    },
+    {
+      "id": "833efe24-fb41-41f0-8a5d-d9b0f75def93",
+      "name": "Finote Selam"
+    },
+    {
+      "id": "3f4db121-cd05-4bd9-a9ac-c46eb0783f1a",
+      "name": "Wukro"
+    },
+    {
+      "id": "d98825d7-f380-4502-852d-a02e961e6e2e",
+      "name": "Gimbi"
+    },
+    {
+      "id": "a4d7e1b9-333a-4ba3-95ff-6e39687aaa79",
+      "name": "Chiro"
+    },
+    {
+      "id": "06628e26-edbe-490e-a30a-bafe26c9a88e",
+      "name": "Bedele"
+    },
+    {
+      "id": "a34eaac4-0677-400a-aecf-d90bea4805f4",
+      "name": "Dembi Dolo"
+    },
+    {
+      "id": "e7680056-1666-401e-b5a4-76a7d9353d9f",
+      "name": "Agaro"
+    },
+    {
+      "id": "1879b371-682b-4626-aafc-aa716c69656a",
+      "name": "Yirgalem"
+    },
+    {
+      "id": "8787ad9d-0b78-49cd-914a-37874f07ccc3",
+      "name": "Metu"
+    }
+  ]
+}

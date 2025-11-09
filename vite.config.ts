@@ -36,5 +36,12 @@ export default defineConfig({
       strict: true,
       deny: ["**/.*"],
     },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5010', // Forward /api requests to the Express backend
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/api'), // Ensure the /api prefix is kept
+      },
+    },
   },
 });

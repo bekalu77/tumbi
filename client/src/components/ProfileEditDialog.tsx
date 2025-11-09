@@ -1,4 +1,6 @@
 import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   Dialog,
   DialogContent,
@@ -19,30 +21,73 @@ interface ProfileEditDialogProps {
 }
 
 interface ProfileFormData {
+  username: string;
   fullName: string;
   email: string;
   phone: string;
   company?: string;
   bio?: string;
   location?: string;
+  profilePicture: FileList;
 }
 
 export default function ProfileEditDialog({ open, onOpenChange }: ProfileEditDialogProps) {
-  const { register, handleSubmit, formState: { errors } } = useForm<ProfileFormData>({
-    defaultValues: {
-      fullName: "",
-      email: "",
-      phone: "",
-      company: "",
-      bio: "",
-      location: "",
-    },
-  });
+  const { user, refetchUser } = useAuth();
+  const [preview, setPreview] = useState<string | null>(null);
+  const { register, handleSubmit, formState: { errors }, watch, reset } = useForm<ProfileFormData>();
 
-  const onSubmit = (data: ProfileFormData) => {
-    console.log("Profile data:", data);
-    // TODO: Save to database
-    onOpenChange(false);
+  useEffect(() => {
+    if (user) {
+      reset({
+        username: user.username,
+        fullName: user.fullName || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        company: user.company || "",
+        bio: user.bio || "",
+        location: user.location || "",
+      });
+      if (user.profilePictureUrl) {
+        setPreview(user.profilePictureUrl);
+      }
+    }
+  }, [user, reset]);
+
+  const onSubmit = async (data: ProfileFormData) => {
+    const formData = new FormData();
+    Object.keys(data).forEach(key => {
+      if (key === 'profilePicture') {
+        if (data[key][0]) {
+          formData.append(key, data[key][0]);
+        }
+      } else {
+        // @ts-ignore
+        formData.append(key, data[key]);
+      }
+    });
+
+    try {
+      const res = await fetch(`/api/users/${user?.id}`, {
+        method: "PUT",
+        body: formData,
+      });
+      if (!res.ok) {
+        throw new Error("Failed to update profile");
+      }
+      await refetchUser();
+      onOpenChange(false);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const profilePicture = watch("profilePicture");
+  
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+    }
   };
 
   return (
@@ -57,13 +102,25 @@ export default function ProfileEditDialog({ open, onOpenChange }: ProfileEditDia
           <div className="flex justify-center">
             <div className="relative">
               <Avatar className="h-24 w-24">
-                <AvatarFallback className="text-2xl">U</AvatarFallback>
+                {preview ? (
+                  <img src={preview} alt="Profile preview" className="h-full w-full object-cover" />
+                ) : (
+                  <AvatarFallback className="text-2xl">U</AvatarFallback>
+                )}
               </Avatar>
+              <Input
+                id="profilePicture"
+                type="file"
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                {...register("profilePicture")}
+                onChange={handleFileChange}
+                data-testid="input-profile-picture"
+              />
               <Button
                 type="button"
                 size="icon"
                 variant="secondary"
-                className="absolute bottom-0 right-0 rounded-full h-8 w-8"
+                className="absolute bottom-0 right-0 rounded-full h-8 w-8 pointer-events-none"
                 data-testid="button-change-avatar"
               >
                 <Camera className="h-4 w-4" />
@@ -72,6 +129,18 @@ export default function ProfileEditDialog({ open, onOpenChange }: ProfileEditDia
           </div>
 
           <div className="grid md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="username">Username *</Label>
+              <Input
+                id="username"
+                {...register("username", { required: "Username is required" })}
+                placeholder="john.doe"
+                data-testid="input-username"
+              />
+              {errors.username && (
+                <p className="text-sm text-destructive">{errors.username.message}</p>
+              )}
+            </div>
             <div className="space-y-2">
               <Label htmlFor="fullName">Full Name *</Label>
               <Input
@@ -84,7 +153,9 @@ export default function ProfileEditDialog({ open, onOpenChange }: ProfileEditDia
                 <p className="text-sm text-destructive">{errors.fullName.message}</p>
               )}
             </div>
+          </div>
 
+          <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="phone">Phone Number *</Label>
               <Input

@@ -41,8 +41,20 @@ export async function setupVite(app: Express, server: Server) {
   });
 
   app.use(vite.middlewares);
-  app.use("*", async (req, res, next) => {
+
+  // Handle SPA routing - only for non-API routes
+  app.use(async (req, res, next) => {
     const url = req.originalUrl;
+
+    // Skip API routes, static files, and uploads
+    if (url.startsWith("/api/") || url.startsWith("/uploads/") || url.includes(".")) {
+      return next();
+    }
+
+    // Only handle GET requests for SPA routing
+    if (req.method !== "GET") {
+      return next();
+    }
 
     try {
       const clientTemplate = path.resolve(

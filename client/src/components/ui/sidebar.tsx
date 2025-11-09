@@ -126,6 +126,22 @@ function SidebarProvider({
     [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
   )
 
+  // Auto-close a few seconds after opening (desktop)
+  React.useEffect(() => {
+    if (!isMobile && open) {
+      const id = setTimeout(() => setOpen(false), 3000)
+      return () => clearTimeout(id)
+    }
+  }, [isMobile, open, setOpen])
+
+  // Auto-close a few seconds after opening (mobile sheet)
+  React.useEffect(() => {
+    if (isMobile && openMobile) {
+      const id = setTimeout(() => setOpenMobile(false), 3000)
+      return () => clearTimeout(id)
+    }
+  }, [isMobile, openMobile, setOpenMobile])
+
   return (
     <SidebarContext.Provider value={contextValue}>
       <TooltipProvider delayDuration={0}>

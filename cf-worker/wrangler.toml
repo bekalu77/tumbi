@@ -1,0 +1,11 @@
+name = "tumbi-asset-proxy"
+main = "index.ts"
+compatibility_date = "2023-10-20"
+
+# Cloudflare R2 configuration
+# These variables will be injected from your .env file when using Wrangler
+[vars]
+
+[[r2_buckets]]
+binding = "R2_BUCKET" # The name of the binding in your Worker code
+bucket_name = "tumbi-assets" # The name of your R2 bucket

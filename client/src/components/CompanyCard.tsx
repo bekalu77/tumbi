@@ -1,7 +1,9 @@
-import { MapPin, Package } from "lucide-react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { MapPin, CheckCircle, Pencil, Trash2 } from "lucide-react";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "./ui/button";
 
 interface CompanyCardProps {
   id: string;
@@ -9,9 +11,11 @@ interface CompanyCardProps {
   description: string;
   location: string;
   category: string;
-  productCount: number;
   logo?: string;
   onClick?: () => void;
+  onDelete?: () => void;
+  onEdit?: () => void;
+  isVerified?: boolean;
 }
 
 export default function CompanyCard({
@@ -20,13 +24,16 @@ export default function CompanyCard({
   description,
   location,
   category,
-  productCount,
   logo,
   onClick,
+  onDelete,
+  onEdit,
+  isVerified,
 }: CompanyCardProps) {
+  const { user } = useAuth();
   return (
     <Card
-      className="cursor-pointer hover-elevate active-elevate-2 transition-transform hover:-translate-y-1"
+      className="cursor-pointer hover-elevate active-elevate-2 transition-transform hover:-translate-y-1 flex flex-col"
       onClick={onClick}
       data-testid={`card-company-${id}`}
     >
@@ -39,23 +46,41 @@ export default function CompanyCard({
           )}
         </Avatar>
         <div className="flex-1">
-          <h3 className="font-semibold text-xl line-clamp-1">{name}</h3>
+          <div className="flex items-center gap-2">
+            <h3 className="font-semibold text-xl line-clamp-1">{name}</h3>
+            {isVerified && <CheckCircle className="h-5 w-5 text-green-500" />}
+          </div>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
             <MapPin className="h-3 w-3" />
             <span className="line-clamp-1">{location}</span>
           </div>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-grow">
         <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{description}</p>
         <div className="flex items-center justify-between">
           <Badge variant="secondary">{category}</Badge>
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            <Package className="h-4 w-4" />
-            <span>{productCount} products</span>
-          </div>
         </div>
       </CardContent>
+      {user?.username === "admin77" && (
+        <CardFooter className="p-4 pt-0">
+          <div className="flex gap-2 w-full">
+            <Button variant="outline" size="sm" className="w-full" onClick={(e) => { e.stopPropagation(); onEdit?.(); }}>
+              <Pencil className="h-4 w-4 mr-2" />
+              Edit
+            </Button>
+            <Button variant="destructive" size="sm" className="w-full" onClick={(e) => {
+              e.stopPropagation();
+              if (window.confirm("Are you sure you want to delete this company? All related products/services and jobs will also be deleted.")) {
+                onDelete?.();
+              }
+            }}>
+              <Trash2 className="h-4 w-4 mr-2" />
+              Delete
+            </Button>
+          </div>
+        </CardFooter>
+      )}
     </Card>
   );
 }

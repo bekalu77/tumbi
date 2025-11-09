@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Plus, SlidersHorizontal } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -20,33 +21,137 @@ import FilterPanel from "@/components/FilterPanel";
 import CompanyDetailModal from "@/components/CompanyDetailModal";
 import CompanyFormDialog from "@/components/CompanyFormDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
-import productImage from "@assets/stock_images/construction_materia_151531d6.jpg";
+import { useAuth } from "@/contexts/AuthContext";
+import { Company, Item } from "@shared/schema";
+import { useToast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+
+async function fetchCompanies(userId?: string): Promise<Company[]> {
+  const url = userId ? `/api/companies?userId=${userId}` : "/api/companies";
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error("Failed to fetch companies");
+  }
+  return res.json();
+}
+
+async function fetchProductsByCompany(companyId: string): Promise<Item[]> {
+  const res = await fetch(`/api/companies/${companyId}/products`);
+  if (!res.ok) {
+    throw new Error("Failed to fetch products");
+  }
+  return res.json();
+}
 
 export default function BrowseCompanies() {
   const { t } = useLanguage();
-  const [selectedCompany, setSelectedCompany] = useState<any>(null);
+  const { user } = useAuth();
+  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
   const [showCompanyForm, setShowCompanyForm] = useState(false);
+  const [editingCompany, setEditingCompany] = useState<Company | null>(null);
+  const [filters, setFilters] = useState<any>({});
+  const [sort, setSort] = useState("latest");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const { toast } = useToast();
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [companyToDelete, setCompanyToDelete] = useState<string | null>(null);
 
-  const companies = Array.from({ length: 8 }, (_, i) => ({
-    id: `${i + 1}`,
-    name: `Company ${i + 1}`,
-    description: "Leading construction materials supplier with state-of-the-art facilities and commitment to quality.",
-    location: "Addis Ababa, Ethiopia",
-    category: ["Cement", "Steel", "Wood", "Tiles"][i % 4],
-    productCount: 12 + i * 3,
-    products: [
-      {
-        id: "1",
-        name: "Product 1",
-        company: `Company ${i + 1}`,
-        category: "Cement",
-        price: 450,
-        unit: "bag",
-        image: productImage,
-      },
-    ],
-    isOwner: i === 0,
-  }));
+  const { data: companies = [], isLoading, error } = useQuery<Company[]>({
+    queryKey: ["companies", filters.userId || "all"],
+    queryFn: () => fetchCompanies(filters.userId),
+  });
+
+  const { data: selectedCompanyProducts = [] } = useQuery<Item[]>({
+    queryKey: ["products", selectedCompany?.id],
+    queryFn: () => fetchProductsByCompany(selectedCompany!.id),
+    enabled: !!selectedCompany,
+  });
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    // Auto-apply search filter immediately
+    setFilters((prev: any) => ({
+      ...prev,
+      search: query,
+      showMyCompanies: user?.id ? prev.showMyCompanies || false : false,
+      userId: prev.showMyCompanies ? user?.id : undefined
+    }));
+  };
+
+  const handleReset = () => {
+    setFilters({});
+    setSearchQuery("");
+  };
+
+  const filteredAndSortedCompanies = useMemo(() => {
+    let result = [...companies];
+
+    // Apply user filtering first (server-side filtering should already be applied)
+    // But if user filter is active, we should only show user's companies
+    if (filters.userId) {
+      // Server should already filter by userId, but double-check
+      result = result.filter((c) => c.userId === filters.userId);
+    }
+
+    // Search filtering
+    if (filters.search && filters.search.trim()) {
+      const query = filters.search.toLowerCase().trim();
+      const queryWords = query.split(/\s+/);
+
+      result = result.filter((company) => {
+        const searchableText = `${company.name} ${company.description || ''} ${company.companyType || ''} ${company.location || ''}`.toLowerCase();
+
+        // Check if all query words are found in the searchable text (spelling tolerant by allowing partial matches)
+        return queryWords.every((word: string) =>
+          searchableText.includes(word)
+        );
+      });
+    }
+
+    // Category filtering
+    if (filters.category) {
+      const selectedCategories = filters.category.split(',');
+      if (selectedCategories.length > 0) {
+        result = result.filter((c) => selectedCategories.includes(c.companyType || ""));
+      }
+    }
+
+    // Location filtering
+    if (filters.location) {
+      result = result.filter((c) => c.location?.toLowerCase().includes(filters.location.toLowerCase()));
+    }
+
+    // Sorting
+    switch (sort) {
+      case "name":
+        result.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "latest":
+      default:
+        result.sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+        break;
+    }
+
+    return result;
+  }, [companies, filters, sort]);
+
+  const ITEMS_PER_PAGE = 9;
+  const paginatedCompanies = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredAndSortedCompanies.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredAndSortedCompanies, currentPage]);
+
+  const totalPages = Math.ceil(filteredAndSortedCompanies.length / ITEMS_PER_PAGE);
 
   return (
     <div className="min-h-screen">
@@ -54,8 +159,10 @@ export default function BrowseCompanies() {
         <aside className="hidden lg:block w-80 border-r p-6 min-h-screen sticky top-16">
           <FilterPanel
             type="companies"
-            onApply={(filters) => console.log("Filters applied:", filters)}
-            onReset={() => console.log("Filters reset")}
+            onApply={setFilters}
+            onReset={handleReset}
+            onSearch={handleSearch}
+            userId={user?.id}
           />
         </aside>
 
@@ -78,58 +185,186 @@ export default function BrowseCompanies() {
                     <div className="mt-6">
                       <FilterPanel
                         type="companies"
-                        onApply={(filters) => console.log("Filters applied:", filters)}
-                        onReset={() => console.log("Filters reset")}
+                        onApply={setFilters}
+                        onReset={handleReset}
+                        onSearch={handleSearch}
+                        userId={user?.id}
                       />
                     </div>
                   </SheetContent>
                 </Sheet>
 
-                <Select defaultValue="latest">
+                <Select value={sort} onValueChange={setSort}>
                   <SelectTrigger className="w-48" data-testid="select-sort">
                     <SelectValue placeholder={t("sortBy")} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="latest">{t("latest")}</SelectItem>
                     <SelectItem value="name">Name A-Z</SelectItem>
-                    <SelectItem value="products">Most Products</SelectItem>
                   </SelectContent>
                 </Select>
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    setEditingCompany(null);
+                    setShowCompanyForm(true);
+                  }}
+                  data-testid="button-register-company"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground border-primary"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  {t("registerCompany")}
+                </Button>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {companies.map((company) => (
-                <CompanyCard
-                  key={company.id}
-                  {...company}
-                  onClick={() => setSelectedCompany(company)}
-                />
-              ))}
-            </div>
+            {isLoading && <p>Loading companies...</p>}
+            {error && <p className="text-red-500">Error fetching companies.</p>}
+            {!isLoading && !error && (
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {paginatedCompanies.map((company) => (
+                    <CompanyCard
+                      key={company.id}
+                      {...company}
+                    description={company.description || ""}
+                    location={company.location || ""}
+                    category={company.companyType || "General"}
+                    onClick={() => setSelectedCompany(company)}
+                    onDelete={() => {
+                      setCompanyToDelete(company.id);
+                      setShowDeleteConfirm(true);
+                    }}
+                    isVerified={company.isVerified ?? false}
+                    />
+                  ))}
+                </div>
+                {totalPages > 1 && (
+                  <div className="flex justify-center items-center mt-8">
+                    <Button
+                      onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                      disabled={currentPage === 1}
+                      variant="outline"
+                    >
+                      {t("previous")}
+                    </Button>
+                    <span className="mx-4">
+                      {t("page")} {currentPage} {t("of")} {totalPages}
+                    </span>
+                    <Button
+                      onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                      disabled={currentPage === totalPages}
+                      variant="outline"
+                    >
+                      {t("next")}
+                    </Button>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </main>
       </div>
 
-      <Button
-        size="lg"
-        onClick={() => setShowCompanyForm(true)}
-        className="fixed top-24 right-6 rounded-full h-14 px-6 shadow-2xl z-40"
-        data-testid="button-register-company"
-      >
-        <Plus className="h-5 w-5 mr-2" />
-        {t("registerCompany")}
-      </Button>
+<AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+      <AlertDialogDescription>
+        This action cannot be undone. This will permanently delete your company
+        and remove its data from our servers.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction onClick={async () => {
+        if (companyToDelete) {
+          try {
+            const response = await fetch(`/api/companies/${companyToDelete}`, {
+              method: 'DELETE',
+            });
+            if (response.ok) {
+              toast({
+                title: "Success",
+                description: "Company deleted successfully.",
+              });
+              // Refresh companies
+              window.location.reload(); // Or use queryClient.invalidateQueries
+            } else {
+              const errorData = await response.json();
+              throw new Error(errorData.message || 'Failed to delete company');
+            }
+          } catch (error) {
+            toast({
+              title: "Error",
+              description: error instanceof Error ? error.message : "An error occurred during deletion.",
+              variant: "destructive",
+            });
+          } finally {
+            setCompanyToDelete(null);
+            setSelectedCompany(null); // Close detail modal after deletion
+          }
+        }
+      }}>Continue</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
 
-      <CompanyFormDialog open={showCompanyForm} onOpenChange={setShowCompanyForm} mode="register" />
+
+
+      <CompanyFormDialog
+        open={showCompanyForm}
+        onOpenChange={(open) => {
+          setShowCompanyForm(open);
+          if (!open) {
+            setEditingCompany(null);
+          }
+        }}
+        company={editingCompany ? {
+          id: editingCompany.id,
+          name: editingCompany.name,
+          email: editingCompany.email || "",
+          phone: editingCompany.phone || "",
+          description: editingCompany.description || "",
+          location: editingCompany.location || "",
+          website: editingCompany.website || "",
+        } : undefined}
+        mode={editingCompany ? "edit" : "add"}
+        onSuccess={() => {
+          setShowCompanyForm(false);
+          setEditingCompany(null);
+        }}
+      />
 
       {selectedCompany && (
         <CompanyDetailModal
           open={!!selectedCompany}
-          onOpenChange={(open) => !open && setSelectedCompany(null)}
-          company={selectedCompany}
-          onEdit={() => console.log("Edit company")}
-          onDelete={() => console.log("Delete company")}
+          onOpenChange={(open: boolean) => !open && setSelectedCompany(null)}
+          company={{
+            ...selectedCompany,
+            description: selectedCompany.description || "",
+            location: selectedCompany.location || "",
+            email: selectedCompany.email || undefined,
+            phone: selectedCompany.phone || undefined,
+            website: selectedCompany.website || undefined,
+            logoUrl: selectedCompany.logoUrl || undefined,
+            typeId: selectedCompany.typeId || undefined,
+            products: selectedCompanyProducts.map(p => ({
+              id: p.id,
+              name: p.name,
+              company: selectedCompany.name,
+              category: "Unknown",
+              price: p.price || 0,
+              unit: p.unit || "N/A",
+              imageUrls: p.imageUrls || [], // Changed to imageUrls and ensured it's an array
+            })),
+            isOwner: user?.id === selectedCompany.userId,
+          }}
+          mode="view" // Added mode prop
+          onDelete={() => {
+            setCompanyToDelete(selectedCompany.id);
+            setShowDeleteConfirm(true);
+          }}
         />
       )}
     </div>

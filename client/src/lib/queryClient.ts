@@ -38,7 +38,15 @@ export const getQueryFn: <T>(options: {
     }
 
     await throwIfResNotOk(res);
-    return await res.json();
+    const contentType = res.headers.get("content-type") || "";
+    if (contentType.includes("application/json")) {
+      return await res.json();
+    }
+    const text = await res.text();
+    throw new Error(
+      `Expected JSON but received content-type=\"${contentType}\". ` +
+        `Check your request URL (did you forget the /api prefix?). First bytes: ${text.slice(0, 120)}...`,
+    );
   };
 
 export const queryClient = new QueryClient({

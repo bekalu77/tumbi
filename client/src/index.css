@@ -352,4 +352,23 @@
   .border.hover-elevate:not(.no-hover-interaction-elevate)::after {
     inset: -1px;
   }
+
+  .animate-plumb-bob {
+    animation: plumbBobAnimation 2s ease-in-out forwards;
+  }
+}
+
+@keyframes plumbBobAnimation {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(calc(100vh - 100px)) scale(1.2); /* Adjust 100px based on header/footer height */
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0;
+  }
 }

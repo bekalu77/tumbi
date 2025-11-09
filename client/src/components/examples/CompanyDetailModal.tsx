@@ -25,7 +25,7 @@ export default function CompanyDetailModalExample() {
               category: "Cement",
               price: 450,
               unit: "bag",
-              image: productImage,
+              imageUrl: productImage, // Changed 'image' to 'imageUrl'
             },
             {
               id: "2",
@@ -34,12 +34,12 @@ export default function CompanyDetailModalExample() {
               category: "Cement",
               price: 380,
               unit: "bag",
-              image: productImage,
+              imageUrl: productImage,
             },
           ],
           isOwner: true,
         }}
-        onEdit={() => console.log("Edit clicked")}
+        mode="view" // Added mode prop
         onDelete={() => console.log("Delete clicked")}
       />
     </div>

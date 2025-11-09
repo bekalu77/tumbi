@@ -6,7 +6,8 @@ import productImage from "@assets/stock_images/construction_materia_151531d6.jpg
 export default function Favorites() {
   const { t } = useLanguage();
 
-  // TODO: Replace with actual favorites from state/database
+  // TODO: Implement actual favorites fetching from a state management solution or API.
+  // The current `favoriteProducts` array is placeholder data for demonstration purposes.
   const favoriteProducts = [
     {
       id: "1",
@@ -15,7 +16,7 @@ export default function Favorites() {
       category: "Cement",
       price: 450,
       unit: "bag",
-      image: productImage,
+      imageUrls: [productImage],
       companyPhone: "+251 11 123 4567",
       companyEmail: "contact@derba.com",
     },
@@ -26,7 +27,7 @@ export default function Favorites() {
       category: "Steel",
       price: 2800,
       unit: "ton",
-      image: productImage,
+      imageUrls: [productImage],
       companyPhone: "+251 25 111 2233",
       companyEmail: "info@ethsteel.com",
     },

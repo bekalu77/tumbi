@@ -1,4 +1,4 @@
-import { Home, Package, Building2, Heart, Info } from "lucide-react";
+import { Home, Package, Building2, Info, FileText, ClipboardList, Briefcase } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -22,9 +22,11 @@ export function AppSidebar() {
 
   const menuItems = [
     { icon: Home, label: t("home"), path: "/" },
-    { icon: Package, label: t("browseProducts"), path: "/products" },
+    { icon: Package, label: t("browseProductsAndServices"), path: "/products-services" },
     { icon: Building2, label: t("browseCompanies"), path: "/companies" },
-    { icon: Heart, label: t("favorites"), path: "/favorites" },
+    { icon: Briefcase, label: t("browseJobs"), path: "/jobs" },
+    { icon: FileText, label: t("articles"), path: "/articles" },
+    { icon: ClipboardList, label: t("tenders"), path: "/tenders" },
     { icon: Info, label: t("about"), path: "/about" },
   ];
 
@@ -38,7 +40,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel>{t("navigation")}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
@@ -57,7 +59,7 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter className="p-4">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-muted-foreground">Language</span>
+          <span className="text-sm text-muted-foreground">{t("language")}</span>
           <LanguageToggle />
         </div>
       </SidebarFooter>
