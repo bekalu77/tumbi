@@ -7,8 +7,8 @@
     "dev": "npm-run-all --parallel dev:server dev:client",
     "dev:server": "cross-env NODE_ENV=development tsx server/index.ts",
     "dev:client": "vite",
-    "postinstall": "npx vite build",
-    "build": "npx esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
+    "postinstall": "vite build",
+    "build": "tsc && vite build",
     "start": "cross-env NODE_ENV=production node dist/index.js",
     "check": "tsc",
     "db:generate": "drizzle-kit generate",
@@ -101,7 +101,8 @@
     "wouter": "^3.3.5",
     "ws": "^8.18.0",
     "zod": "^3.24.2",
-    "zod-validation-error": "^3.4.0"
+    "zod-validation-error": "^3.4.0",
+    "vite": "^5.4.20"
   },
   "devDependencies": {
     "@aws-sdk/client-s3": "^3.927.0",
@@ -132,7 +133,6 @@
     "tailwindcss-typography": "^3.1.0",
     "tsx": "^4.20.5",
     "typescript": "5.6.3",
-    "vite": "^5.4.20",
     "wrangler": "^4.46.0"
   },
   "optionalDependencies": {
